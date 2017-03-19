@@ -12,8 +12,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataJpaTest
 public class DeveloperRepositoryTest {
 
-
-
     @Autowired
     private DeveloperRepository developerRepository;
 }
