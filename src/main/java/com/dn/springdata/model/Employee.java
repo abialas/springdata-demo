@@ -1,10 +1,8 @@
 package com.dn.springdata.model;
 
-import org.springframework.data.annotation.PersistenceConstructor;
-
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Date;
+import java.util.List;
 
 /**
  * Created by adam on 18.03.2017.
@@ -22,6 +20,8 @@ public class Employee {
     private EmployeePosition position;
     private LocalDate startDate;
     private LocalDate endDate;
+    @ManyToMany(mappedBy = "employees")
+    private List<Task> tasks;
 
     private Employee() {
     }

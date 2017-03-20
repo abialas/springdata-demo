@@ -17,7 +17,6 @@ import static org.hamcrest.Matchers.is;
  * Created by adam on 18.03.2017.
  */
 @RunWith(SpringRunner.class)
-//@SpringBootTest
 @DataJpaTest
 public class EmployeeRepositoryTest {
 
