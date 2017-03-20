@@ -2,9 +2,7 @@ package com.dn.springdata.model;
 
 import org.springframework.data.annotation.PersistenceConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.Date;
 
@@ -20,6 +18,7 @@ public class Employee {
 
     private String firstName;
     private String lastName;
+    @Enumerated(EnumType.STRING)
     private EmployeePosition position;
     private LocalDate startDate;
     private LocalDate endDate;
