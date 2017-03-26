@@ -1,5 +1,6 @@
 package com.dn.springdata.repo;
 
+import com.dn.springdata.model.DocHeader;
 import org.springframework.data.repository.CrudRepository;
 
 /**

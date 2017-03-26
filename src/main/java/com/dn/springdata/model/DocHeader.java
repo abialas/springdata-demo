@@ -1,4 +1,4 @@
-package com.dn.springdata.repo;
+package com.dn.springdata.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
 
