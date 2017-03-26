@@ -17,17 +17,22 @@ public class Employee {
     private String firstName;
     private String lastName;
     @Enumerated(EnumType.STRING)
-    private EmployeePosition position;
+    private EmployeePosition employeePosition;
     private LocalDate startDate;
     private LocalDate endDate;
     @ManyToMany(mappedBy = "employees")
     private List<Task> tasks;
+    @Enumerated(EnumType.STRING)
+    private ExperienceLevelEnum experienceLevel;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
 
     private Employee() {
     }
 
     public Employee(EmployeePosition position) {
-        this.position = position;
+        this.employeePosition = position;
     }
 
     public Long getId() {
@@ -50,12 +55,12 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public EmployeePosition getPosition() {
-        return position;
+    public EmployeePosition getEmployeePosition() {
+        return employeePosition;
     }
 
-    public void setPosition(EmployeePosition position) {
-        this.position = position;
+    public void setEmployeePosition(EmployeePosition employeePosition) {
+        this.employeePosition = employeePosition;
     }
 
     public LocalDate getStartDate() {
@@ -72,5 +77,29 @@ public class Employee {
 
     public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    public List<Task> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
+    }
+
+    public ExperienceLevelEnum getExperienceLevel() {
+        return experienceLevel;
+    }
+
+    public void setExperienceLevel(ExperienceLevelEnum experienceLevel) {
+        this.experienceLevel = experienceLevel;
     }
 }

@@ -4,38 +4,34 @@ import com.dn.springdata.model.QA;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
+
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.is;
+
 
 /**
  * Created by adam on 18.03.2017.
  */
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@SpringBootTest
 public class QARepositoryTest {
 
     @Autowired
     private QARepository qaRepository;
 
     @Test
+    @Sql("/data/qa.sql")
     public void shouldReturnAllQAWithSurnameSampleQA() {
-        // given
-        QA qa1 = new QA();
-        qa1.setFirstName("Name1");
-        qa1.setLastName("SampleQA");
-
-        QA qa2 = new QA();
-        qa2.setFirstName("Name2");
-        qa2.setLastName("SampleQA!");
-
-        QA qa3 = new QA();
-        qa3.setFirstName("Name3");
-        qa3.setLastName("SampleQA");
-
         // when
-//        int size = qa
+        Iterable<QA> seniorQAs = qaRepository.findAllByLastName("SampleQA");
 
         // then
+        assertThat(seniorQAs.spliterator().getExactSizeIfKnown(), is(2l));
     }
 
 }

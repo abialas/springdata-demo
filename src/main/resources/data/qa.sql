@@ -1,19 +1,19 @@
 INSERT INTO public.employee(
 	dtype, id, end_date, first_name, last_name, employee_position, start_date, experience_level)
-	VALUES ('Developer', 1,  null, 'Adam', 'Bialas', 'DEVELOPER', null, 'SENIOR');
+	VALUES ('QA', 1,  null, 'Tomasz', 'SampleQA', 'QA', null, 'SENIOR');
 
 INSERT INTO public.employee(
   dtype, id, end_date, first_name, last_name, employee_position, start_date, experience_level)
-VALUES ('Developer', 2,  null, 'Krzysztof', 'Psikuta', 'DEVELOPER', null, 'SENIOR');
+VALUES ('QA', 2,  null, 'Dawid', 'SampleQA1', 'QA', null, 'SENIOR');
 
 INSERT INTO public.employee(
   dtype, id, end_date, first_name, last_name, employee_position, start_date, experience_level)
-VALUES ('Developer', 3,  null, 'Tomasz', 'Dev', 'DEVELOPER', null, 'JUNIOR');
+VALUES ('QA', 3,  null, 'Kamil', 'SampleQA', 'QA', null, 'SENIOR');
 
 INSERT INTO public.employee(
   dtype, id, end_date, first_name, last_name, employee_position, start_date, experience_level)
-VALUES ('Developer', 4,  null, 'Piotr', 'Sample', 'DEVELOPER', null, 'PROFESSIONAL');
+VALUES ('QA', 4,  null, 'Tomek', 'SampleQA2', 'QA', null, 'JUNIOR');
 
 INSERT INTO public.employee(
   dtype, id, end_date, first_name, last_name, employee_position, start_date, experience_level)
-VALUES ('Developer', 5,  null, 'Mirek', 'Git', 'DEVELOPER', null, 'PROFESSIONAL');
+VALUES ('QA', 5,  null, 'Mateusz', 'SampleQA3', 'QA', null, 'PROFESSIONAL');
