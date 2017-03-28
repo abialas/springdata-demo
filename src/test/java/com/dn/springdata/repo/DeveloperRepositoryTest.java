@@ -14,9 +14,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Collection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 /**
@@ -25,6 +25,7 @@ import static org.hamcrest.Matchers.is;
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Sql("/data/developers.sql")
 public class DeveloperRepositoryTest {
 
     @Autowired
@@ -37,7 +38,6 @@ public class DeveloperRepositoryTest {
     }
 
     @Test
-    @Sql("/data/developers.sql")
     public void shouldListAllDevelopers() {
         // when
         Iterable<Developer> employees = developerRepository.findAll();
@@ -61,57 +61,70 @@ public class DeveloperRepositoryTest {
 
         // then
         assertThat(developers.iterator().hasNext(), is(true));
-        assertThat(developers.spliterator().getExactSizeIfKnown(), is(1l));
+        assertThat(developers.spliterator().getExactSizeIfKnown(), is(6l));
     }
 
     @Test
-    @Sql("/data/developers.sql")
     public void shouldListAllSeniorDevelopers() {
         // when
         Iterable<Developer> seniorDevelopers = developerRepository.findAllSeniorDevelopers();
 
         // then
-        assertThat(seniorDevelopers.spliterator().getExactSizeIfKnown(), equalTo(2l));
+        assertThat(seniorDevelopers.spliterator().getExactSizeIfKnown(), is(2l));
     }
 
     @Test
-    @Sql("/data/developers.sql")
     public void shouldListOnlySeniorDevelopers() {
         // when
         Iterable<Developer> seniorDevelopers = developerRepository.findByExperienceLevel(ExperienceLevelEnum.SENIOR);
 
         // then
-        assertThat(seniorDevelopers.spliterator().getExactSizeIfKnown(), equalTo(2l));
+        assertThat(seniorDevelopers.spliterator().getExactSizeIfKnown(), is(2l));
     }
 
     @Test
-    @Sql("/data/developers.sql")
     public void shouldListOnlyProfessionalDevelopers() {
         // when
         Iterable<Developer> proDevelopers = developerRepository.findByExperienceLevel(ExperienceLevelEnum.PROFESSIONAL);
 
         // then
-        assertThat(proDevelopers.spliterator().getExactSizeIfKnown(), equalTo(2l));
+        assertThat(proDevelopers.spliterator().getExactSizeIfKnown(), is(2l));
     }
 
     @Test
-    @Sql("/data/developers.sql")
     public void shouldListOnlyJuniorDevelopers() {
         // when
         Iterable<Developer> juniorDevelopers = developerRepository.findByExperienceLevel(ExperienceLevelEnum.JUNIOR);
 
         // then
-        assertThat(juniorDevelopers.spliterator().getExactSizeIfKnown(), equalTo(1l));
+        assertThat(juniorDevelopers.spliterator().getExactSizeIfKnown(), is(1l));
     }
 
     @Test
-    @Sql("/data/developers.sql")
     public void shouldReturnAverageSalaryForSeniorDevelopers() {
         // when
         Double averageSalary = developerRepository.findAverageSalaryForExperienceLevel(ExperienceLevelEnum.SENIOR);
 
         // then
-        assertThat(averageSalary, equalTo(1000.0));
+        assertThat(averageSalary, is(1000.0));
     }
 
+    @Test
+    public void shouldReturnOneDeveloperWithNameAdam() {
+        // when
+        Collection<Developer> developers = developerRepository.findByFirstName("Adam");
+
+        // then
+        assertThat(developers.size(), is(1));
+    }
+
+    @Test
+    @Sql("/data/junior_developers.sql")
+    public void shouldOverrideClassSQLAnnotationAndReturnThreeDevelopers() {
+        // when
+        Iterable<Developer> developers = developerRepository.findAll();
+
+        // then
+        assertThat(developers.spliterator().getExactSizeIfKnown(), is(3l));
+    }
 }
