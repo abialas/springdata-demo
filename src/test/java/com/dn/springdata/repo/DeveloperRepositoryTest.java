@@ -127,4 +127,13 @@ public class DeveloperRepositoryTest {
         // then
         assertThat(developers.spliterator().getExactSizeIfKnown(), is(3l));
     }
+
+    @Test
+    public void shouldExecuteMethodFromQueryAnnotation() {
+        // when
+        Double minSalary = developerRepository.findSalaryForDevsWithExperienceLevel(ExperienceLevelEnum.SENIOR);
+
+        // then
+        assertThat(minSalary, is(500.0));
+    }
 }
