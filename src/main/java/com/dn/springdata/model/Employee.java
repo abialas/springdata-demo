@@ -27,6 +27,7 @@ public class Employee {
 
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+    private Double salary;
 
     private Employee() {
     }
@@ -101,5 +102,13 @@ public class Employee {
 
     public void setExperienceLevel(ExperienceLevelEnum experienceLevel) {
         this.experienceLevel = experienceLevel;
+    }
+
+    public Double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(Double salary) {
+        this.salary = salary;
     }
 }

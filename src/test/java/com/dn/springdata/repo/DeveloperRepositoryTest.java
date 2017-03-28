@@ -1,17 +1,12 @@
 package com.dn.springdata.repo;
 
 import com.dn.springdata.model.Developer;
-import com.dn.springdata.model.Employee;
 import com.dn.springdata.model.ExperienceLevelEnum;
 import com.dn.springdata.model.ProgrammingLanguage;
-import org.h2.tools.Server;
-import org.junit.After;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
@@ -37,8 +32,8 @@ public class DeveloperRepositoryTest {
 
     @BeforeClass
     public static void setUpServer() throws SQLException {
-        Server webServer = Server.createWebServer("-web", "-webAllowOthers", "-webPort" ,"8082").start();
-        Server server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092").start();
+//        Server webServer = Server.createWebServer("-web", "-webAllowOthers", "-webPort" ,"8082").start();
+//        Server server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092").start();
     }
 
     @Test
@@ -107,6 +102,16 @@ public class DeveloperRepositoryTest {
 
         // then
         assertThat(juniorDevelopers.spliterator().getExactSizeIfKnown(), equalTo(1l));
+    }
+
+    @Test
+    @Sql("/data/developers.sql")
+    public void shouldReturnAverageSalaryForSeniorDevelopers() {
+        // when
+        Double averageSalary = developerRepository.findAverageSalaryForExperienceLevel(ExperienceLevelEnum.SENIOR);
+
+        // then
+        assertThat(averageSalary, equalTo(1000.0));
     }
 
 }

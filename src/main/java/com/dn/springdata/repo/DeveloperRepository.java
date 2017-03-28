@@ -13,4 +13,6 @@ public interface DeveloperRepository extends PagingAndSortingRepository<Develope
 
     Iterable<Developer> findByExperienceLevel(ExperienceLevelEnum experienceLevel);
 
+    Double findAverageSalaryForExperienceLevel(ExperienceLevelEnum experienceLevel);
+
 }
