@@ -1,6 +1,7 @@
-package com.dn.springdata.repo;
+package com.dn.springdata.repo.jpa;
 
 import com.dn.springdata.model.QA;
+import com.dn.springdata.repo.jpa.QARepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;

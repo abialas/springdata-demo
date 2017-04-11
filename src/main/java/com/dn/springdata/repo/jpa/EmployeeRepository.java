@@ -1,4 +1,4 @@
-package com.dn.springdata.repo;
+package com.dn.springdata.repo.jpa;
 
 import com.dn.springdata.model.Employee;
 import com.dn.springdata.model.Task;

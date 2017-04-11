@@ -1,4 +1,4 @@
-package com.dn.springdata.repo;
+package com.dn.springdata.repo.jpa;
 
 import com.dn.springdata.model.Task;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,9 +10,9 @@ import java.util.List;
 /**
  * Created by adam on 20.03.2017.
  */
-public interface TaskReposiory extends JpaRepository<Task, Long> {
+public interface TaskRepository extends JpaRepository<Task, Long> {
 
-    @Query("select t from Task t where t.name = :taskName")
+    @Query("select t from Task t where lower(t.name) = lower(:taskName)")
     List<Task> findTasksByName(@Param("taskName") String taskName);
 
 }

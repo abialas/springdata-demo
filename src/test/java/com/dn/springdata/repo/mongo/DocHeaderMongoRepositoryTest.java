@@ -1,11 +1,11 @@
-package com.dn.springdata.repo;
+package com.dn.springdata.repo.mongo;
 
 import com.dn.springdata.model.DocHeader;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -17,12 +17,11 @@ import static org.hamcrest.MatcherAssert.assertThat;
  * Created by adam on 25.03.2017.
  */
 @RunWith(SpringRunner.class)
-@DataMongoTest
-//@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
-public class DocHeaderRepositoryTest {
+@SpringBootTest
+public class DocHeaderMongoRepositoryTest {
 
     @Autowired
-    private DocHeaderRepository docHeaderRepository;
+    private DocHeaderMongoRepository docHeaderRepository;
 
     @Autowired
     private MongoTemplate mongoTemplate;

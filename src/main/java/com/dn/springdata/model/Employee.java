@@ -8,16 +8,17 @@ import java.util.List;
  * Created by adam on 18.03.2017.
  */
 @Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public class Employee {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     private String firstName;
     private String lastName;
     @Enumerated(EnumType.STRING)
-    private EmployeePosition employeePosition;
+    private EmployeePosition position;
     private LocalDate startDate;
     private LocalDate endDate;
     @ManyToMany(mappedBy = "employees")
@@ -28,12 +29,13 @@ public class Employee {
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
     private Double salary;
+    private String user;
 
     private Employee() {
     }
 
     public Employee(EmployeePosition position) {
-        this.employeePosition = position;
+        this.position = position;
     }
 
     public Long getId() {
@@ -56,12 +58,12 @@ public class Employee {
         this.lastName = lastName;
     }
 
-    public EmployeePosition getEmployeePosition() {
-        return employeePosition;
+    public EmployeePosition getPosition() {
+        return position;
     }
 
-    public void setEmployeePosition(EmployeePosition employeePosition) {
-        this.employeePosition = employeePosition;
+    public void setPosition(EmployeePosition position) {
+        this.position = position;
     }
 
     public LocalDate getStartDate() {
@@ -110,5 +112,13 @@ public class Employee {
 
     public void setSalary(Double salary) {
         this.salary = salary;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 }

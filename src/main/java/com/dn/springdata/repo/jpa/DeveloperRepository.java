@@ -1,4 +1,4 @@
-package com.dn.springdata.repo;
+package com.dn.springdata.repo.jpa;
 
 import com.dn.springdata.model.Developer;
 import com.dn.springdata.model.ExperienceLevelEnum;
@@ -10,7 +10,7 @@ import java.util.Collection;
 /**
  * Created by adam on 18.03.2017.
  */
-public interface DeveloperRepository extends PagingAndSortingRepository<Developer, Long> {
+public interface DeveloperRepository extends PagingAndSortingRepository<Developer, Long>, CustomDeveloperRepository {
 
     Iterable<Developer> findAllSeniorDevelopers();
 

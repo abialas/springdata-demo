@@ -1,7 +1,9 @@
 package com.dn.springdata.model;
 
+import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.time.LocalDate;
@@ -9,11 +11,13 @@ import java.time.LocalDate;
 /**
  * Created by adam on 25.03.2017.
  */
+@Entity
 @Document
 public class DocHeader {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(generator = "uuid" )
+    @GenericGenerator(name = "uuid", strategy = "uuid")
     private String id;
     private String docNumber;
     private LocalDate docDate;

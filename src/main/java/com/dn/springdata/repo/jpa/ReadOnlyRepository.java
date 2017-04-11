@@ -1,4 +1,4 @@
-package com.dn.springdata.repo;
+package com.dn.springdata.repo.jpa;
 
 import org.springframework.data.repository.NoRepositoryBean;
 import org.springframework.data.repository.Repository;

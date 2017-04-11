@@ -1,7 +1,6 @@
-package com.dn.springdata.repo;
+package com.dn.springdata.repo.jpa;
 
 import com.dn.springdata.model.QA;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 

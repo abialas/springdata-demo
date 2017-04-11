@@ -1,9 +1,8 @@
-package com.dn.springdata.repo;
+package com.dn.springdata.repo.jpa;
 
 import com.dn.springdata.model.Developer;
 import com.dn.springdata.model.ExperienceLevelEnum;
 import com.dn.springdata.model.ProgrammingLanguage;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +11,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -31,12 +29,6 @@ public class DeveloperRepositoryTest {
     @Autowired
     private DeveloperRepository developerRepository;
 
-    @BeforeClass
-    public static void setUpServer() throws SQLException {
-//        Server webServer = Server.createWebServer("-web", "-webAllowOthers", "-webPort" ,"8082").start();
-//        Server server = Server.createTcpServer("-tcp", "-tcpAllowOthers", "-tcpPort", "9092").start();
-    }
-
     @Test
     public void shouldListAllDevelopers() {
         // when
@@ -53,6 +45,7 @@ public class DeveloperRepositoryTest {
         developer.setFirstName("Adam");
         developer.setLastName("Bialas");
         developer.setExperienceLevel(ExperienceLevelEnum.SENIOR);
+//        developer.setUser("abialas");
         developer.setProgrammingLanguages(Arrays.asList(ProgrammingLanguage.JAVA, ProgrammingLanguage.C_SHARP));
 
         // when
@@ -110,12 +103,12 @@ public class DeveloperRepositoryTest {
     }
 
     @Test
-    public void shouldReturnOneDeveloperWithNameAdam() {
+    public void shouldReturnTwoDevelopersWithFirstNameAdam() {
         // when
         Collection<Developer> developers = developerRepository.findByFirstName("Adam");
 
         // then
-        assertThat(developers.size(), is(1));
+        assertThat(developers.size(), is(2));
     }
 
     @Test
@@ -136,4 +129,14 @@ public class DeveloperRepositoryTest {
         // then
         assertThat(minSalary, is(500.0));
     }
+
+    @Test
+    public void shouldReturnAdamAsMostPopularFirstName() {
+        // when
+        String mostPopularName = developerRepository.findMostPopularFirstName();
+
+        // then
+        assertThat(mostPopularName, is("Adam"));
+    }
+
 }
