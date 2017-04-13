@@ -45,7 +45,7 @@ public class DeveloperRepositoryTest {
         developer.setFirstName("Adam");
         developer.setLastName("Bialas");
         developer.setExperienceLevel(ExperienceLevelEnum.SENIOR);
-//        developer.setUser("abialas");
+        developer.setUser("abialas");
         developer.setProgrammingLanguages(Arrays.asList(ProgrammingLanguage.JAVA, ProgrammingLanguage.C_SHARP));
 
         // when
