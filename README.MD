@@ -1,87 +1,123 @@
-# Project Title
+# Spring Data Demo
 
-One Paragraph of project description goes here
+This project shows usage of Spring Data mainly for JPA Data Store. There is also some code regarding Mongo Data Store but
+this data store will be fully covered in another repository.
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+Just clone repository and check out how Spring Data JPA can be used to simplify your DAO layer.
 
-### Prerequisites
+## Remarks
 
-What things you need to install the software and how to install them
+Below is a list of problems and solutions which have been detected during implementation
 
+### 1. Problem with loading @Confguration in JUnit
+ 
+Using @DataJpaTest will not load additional @Configuration. To load it in JUnit you have to use @SpringBootTest annotation.
+ 
 ```
-Give examples
+@Configuration
+@EnableJpaRepositories(basePackages = "com.dn.springdata.repo.jpa", namedQueriesLocation = "classpath:jpa-named-queries.properties")
+@EnableMongoRepositories(basePackages = "com.dn.springdata.repo.mongo")
+public class RepoConf {
+}
 ```
-
-### Installing
-
-A step by step series of examples that tell you have to get a development env running
-
-Say what the step will be
-
 ```
-Give the example
-```
+@RunWith(SpringRunner.class)
+@SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+@Sql("/data/developers.sql")
+public class DeveloperRepositoryTest {
 
-And repeat
+...
 
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
-## Running the tests
-
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
-```
-Give an example
+}
 ```
 
-### And coding style tests
+### Create new database structure before each junit
 
-Explain what these tests test and why
+To recreate database structure (slows downs JUnits but before each method clear, new instance of database is used) class or test annotation can be used (along with setting set in application.properties):
 
 ```
-Give an example
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
 ```
 
-## Deployment
+and in application.properties add the following line:
 
-Add additional notes about how to deploy this on a live system
+```
+spring.jpa.hibernate.ddl-auto=create-drop
+```
 
-## Built With
+### Not embedded database (like Postgres) and database recreation in JUnits
 
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
+For embedded database (like H2) default option is set to:
+``` 
+spring.jpa.hibernate.ddl-auto=create-drop
+```
+This causes that when DirtiesContext is set to:
 
-## Contributing
+```
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_EACH_TEST_METHOD)
+```
+	
+it recreates database before each test.
+For database like Postgres the default option is set to
+```
+spring.jpa.hibernate.ddl-auto=none
+```
+This causes that when DirtiesContext is set as above it does not recreate database before each test.
+To fix it you have to set it to
+```
+spring.jpa.hibernate.ddl-auto=create-drop
+``` 
 
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
+### Database
 
-## Versioning
+By default Spring Data uses H2 DB (if included in pom.xml). If not and there is no other database then tests will fail 
+because Spring cannot create DataSource. Even if we add H2 dependency to pom.xml it can be easily overwritten by e.g. 
+Postgres - just add Postgres dependency and set the connection in application.properties (or in profile properties file e.g. test-postgres.properties and set this profile to active).
 
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
+### NamedQuery missing parameter
 
-## Authors
+When NamedQuery is defined in *.properties file with parameter and in Repository the parameter is missing then exception 
+is thrown during Runtime: 
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+```
+in org.hibernate.QueryException: Not all named parameters have been set
+```
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+Same exception occurs when query is defined in Entity NamedQueries and parameter is also missing.
 
-## License
+### Query result type and return type of repository method 
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
+The result type must be known because otherwise during Runtime ClassCastException may be thrown
+Example:
+```
+developerRepository.findAverageSalaryForExperienceLevel(ExperienceLevelEnum.SENIOR);
+```
+In SQL it returns Double but if it is defined in repository like:
+```
+Iterable<Developer> findAverageSalaryForExperienceLevel(ExperienceLevelEnum experienceLevel);
+```
+then ClassCastException during Runtime will be thrown:
+```
+Iterable<Developer> iterable = developerRepository.findAverageSalaryForExperienceLevel(ExperienceLevelEnum.SENIOR);
+iterable.iterator().next().getSalary() -> is defined as it returns Developer instance so code compiles without problem
+iterable.iterator().next() -> during Runtime this is a Double instance so in above line ClassCastException will be thrown
+```
 
-## Acknowledgments
+### Check library version Spring Boot
 
-* Hat tip to anyone who's code was used
-* Inspiration
-* etc
+To check which libraries version are used for current Spring Boot Application below command should be executed:
+```
+mvn dependency:tree -Dverbose
+```
+
+### Precedence of query definition
+Precedence of query definition (the least important is the first one)
+```
+1. query from Entity 
+2. query from *.properties file 
+3. query from @Query annotation
+```
+It is important to use proper @Query annotation (same exists for Mongo and JPA and compiles without any problem).
