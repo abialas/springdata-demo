@@ -8,13 +8,16 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 /**
@@ -138,5 +141,18 @@ public class DeveloperRepositoryTest {
         // then
         assertThat(mostPopularName, is("Adam"));
     }
+
+    @Test
+    @Transactional
+    public void shouldUpdateTwoProfessionalDevelopersToSenior() {
+        // when
+        int devsUpdatedCount = developerRepository.updateExperienceLevelForDevsWithGivenExperience(
+                ExperienceLevelEnum.PROFESSIONAL,
+                ExperienceLevelEnum.SENIOR);
+
+        // then
+        assertThat(devsUpdatedCount, is(2));
+    }
+
 
 }
