@@ -11,7 +11,7 @@ Just clone repository and check out how Spring Data JPA can be used to simplify 
 
 Below is a list of problems and solutions which have been detected during implementation
 
-### 1. Problem with loading @Confguration in JUnit
+### 1. Problem with loading @Configuration in JUnit
  
 Using @DataJpaTest will not load additional @Configuration. To load it in JUnit you have to use @SpringBootTest annotation.
  
