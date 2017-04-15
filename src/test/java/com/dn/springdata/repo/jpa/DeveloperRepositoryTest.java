@@ -1,6 +1,7 @@
 package com.dn.springdata.repo.jpa;
 
 import com.dn.springdata.model.Developer;
+import com.dn.springdata.model.DeveloperContactInfo;
 import com.dn.springdata.model.ExperienceLevelEnum;
 import com.dn.springdata.model.ProgrammingLanguage;
 import org.junit.Test;
@@ -8,16 +9,15 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.instanceOf;
 import static org.hamcrest.Matchers.is;
 
 /**
@@ -154,5 +154,16 @@ public class DeveloperRepositoryTest {
         assertThat(devsUpdatedCount, is(2));
     }
 
+    @Test
+    public void shouldReturnDevelopersContactInfo() {
+        // when
+        List<DeveloperContactInfo> developerContactInfos = developerRepository.findByAddressCity("Krakow");
+
+        // then
+        assertThat(developerContactInfos.size(), is(3));
+        assertThat(developerContactInfos.get(0).getCity(), is("Krakow"));
+        assertThat(developerContactInfos.get(1).getCity(), is("Krakow"));
+        assertThat(developerContactInfos.get(2).getCity(), is("Krakow"));
+    }
 
 }

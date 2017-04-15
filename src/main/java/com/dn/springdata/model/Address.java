@@ -16,8 +16,6 @@ public class Address {
     private Long id;
     private String city;
     private String street;
-    @OneToOne
-    private Employee employee;
 
     public String getCity() {
         return city;
