@@ -121,3 +121,14 @@ Precedence of query definition (the least important is the first one)
 3. query from @Query annotation
 ```
 It is important to use proper @Query annotation (same exists for Mongo and JPA and compiles without any problem).
+
+### Java 8 and Hibernate
+
+In order to work with Java version 8 and Hibernate lower than 5.2 it is required to add the following dependency to pom.xml:
+
+```
+<dependency>
+    <groupId>org.hibernate</groupId>
+    <artifactId>hibernate-java8</artifactId>
+</dependency>
+```
