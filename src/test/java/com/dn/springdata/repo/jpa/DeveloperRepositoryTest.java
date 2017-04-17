@@ -8,6 +8,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -164,6 +166,19 @@ public class DeveloperRepositoryTest {
         assertThat(developerContactInfos.get(0).getCity(), is("Krakow"));
         assertThat(developerContactInfos.get(1).getCity(), is("Krakow"));
         assertThat(developerContactInfos.get(2).getCity(), is("Krakow"));
+    }
+
+    @Test
+    public void shouldReturnPageForFindAllWithPageable() {
+        // when
+        Page<Developer> developerPage = developerRepository.findAll(new PageRequest(0, 2));
+
+        // then
+        assertThat(developerPage.getTotalElements(), is(5l));
+        assertThat(developerPage.getTotalPages(), is(3));
+        assertThat(developerPage.getNumberOfElements(), is(2));
+        assertThat(developerPage.hasNext(), is(true));
+        assertThat(developerPage.hasPrevious(), is(false));
     }
 
 }
