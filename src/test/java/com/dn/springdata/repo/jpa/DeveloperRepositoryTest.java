@@ -1,15 +1,15 @@
 package com.dn.springdata.repo.jpa;
 
-import com.dn.springdata.model.Developer;
-import com.dn.springdata.model.DeveloperContactInfo;
-import com.dn.springdata.model.ExperienceLevelEnum;
-import com.dn.springdata.model.ProgrammingLanguage;
+import com.dn.springdata.model.*;
+import com.querydsl.core.types.OrderSpecifier;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -179,6 +179,56 @@ public class DeveloperRepositoryTest {
         assertThat(developerPage.getNumberOfElements(), is(2));
         assertThat(developerPage.hasNext(), is(true));
         assertThat(developerPage.hasPrevious(), is(false));
+    }
+
+    @Test
+    public void shouldReturnPageForFindAllWithPageableAndSortByFirstNameAsc() {
+        // when
+        Page<Developer> developerPage = developerRepository.findAll(new PageRequest(0, 2, Sort.Direction.ASC, "firstName"));
+
+        // then
+        assertThat(developerPage.iterator().next().getFirstName(), is("Adam"));
+    }
+
+    @Test
+    public void shouldReturnPageForFindAllWithPageableAndSortByFirstNameDesc() {
+        // when
+        Page<Developer> developerPage = developerRepository.findAll(new PageRequest(0, 2, Sort.Direction.DESC, "firstName"));
+
+        // then
+        assertThat(developerPage.iterator().next().getFirstName(), is("Tomasz"));
+    }
+
+    @Test
+    public void shouldReturnDevelopersWithSortByUserDescNullFirst() {
+        // when
+        OrderSpecifier<String> orderSpecifier = QDeveloper.developer.user.asc().nullsFirst();
+        Iterable<Developer> developers = developerRepository.findAll(orderSpecifier);
+
+        // then
+        assertThat(developers.iterator().next().getFirstName(), is("Mirek"));
+    }
+
+    @Test
+    public void shouldReturnAllSeniorDeveloperWithSortByLastNameAsc() {
+        // when
+        List<Developer> seniorDevsWithSort = developerRepository.findAllSeniorDevelopers(new Sort(Sort.Direction.ASC, "lastName"));
+
+        // then
+        assertThat(seniorDevsWithSort.get(0).getLastName(), is("Bialas"));
+    }
+
+    @Test
+    public void shouldReturnTwoSeniorDevelopersQueryByExample() {
+        // given
+        Developer developer = new Developer();
+        developer.setExperienceLevel(ExperienceLevelEnum.SENIOR);
+
+        // when
+        Iterable<Developer> developers = developerRepository.findAll(Example.of(developer));
+
+        // then
+        assertThat(developers.spliterator().getExactSizeIfKnown(), is(2l));
     }
 
 }

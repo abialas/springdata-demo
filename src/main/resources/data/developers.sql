@@ -37,8 +37,8 @@ VALUES (4);
 INSERT INTO address(id, city, street)
 VALUES (5, 'Katowice', 'Gawronow');
 
-INSERT INTO employee(id, end_date, first_name, last_name, position, start_date, experience_level, salary, "user", address_id)
-VALUES (5,  null, 'Mirek', 'Git', 'DEVELOPER', null, 'PROFESSIONAL', 350.0, 'mgit', 5);
+INSERT INTO employee(id, end_date, first_name, last_name, position, start_date, experience_level, salary, address_id)
+VALUES (5,  null, 'Mirek', 'Git', 'DEVELOPER', null, 'PROFESSIONAL', 350.0, 5);
 
 INSERT INTO developer(id)
 VALUES (5);
