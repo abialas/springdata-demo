@@ -258,4 +258,13 @@ public class DeveloperRepositoryTest {
         assertThat(developers.size(), is(2));
     }
 
+    @Test
+    public void shouldReturnTwoDevelopersWithSalaryBiggerThan450QueryDsl() {
+        // when
+        Iterable<Developer> developers = developerRepository.findAll(QDeveloper.developer.salary.gt(450.0));
+
+        // then
+        assertThat(developers.spliterator().getExactSizeIfKnown(), is(2l));
+    }
+
 }
