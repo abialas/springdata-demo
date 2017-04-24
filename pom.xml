@@ -91,6 +91,11 @@
 			<artifactId>querydsl-jpa</artifactId>
 			<version>${querydsl.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+			<version>RELEASE</version>
+		</dependency>
 	</dependencies>
 
 	<build>

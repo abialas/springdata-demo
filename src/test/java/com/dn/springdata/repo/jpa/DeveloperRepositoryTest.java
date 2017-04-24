@@ -231,4 +231,31 @@ public class DeveloperRepositoryTest {
         assertThat(developers.spliterator().getExactSizeIfKnown(), is(2l));
     }
 
+    @Test
+    public void shouldReturnTwoDevelopersWithSalaryBiggerThan450CriteriaQuery() {
+        // when
+        List<Developer> developers = developerRepository.findDevelopersWithSalaryBiggerThanCriteriaQuery(450.0);
+
+        // then
+        assertThat(developers.size(), is(2));
+    }
+
+    @Test
+    public void shouldReturnTwoDevelopersWithSalaryBiggerThan450CriteriaQueryWithMetaModel() {
+        // when
+        List<Developer> developers = developerRepository.findDevelopersWithSalaryBiggerThanCriteriaQueryWithMetaModel(450.0);
+
+        // then
+        assertThat(developers.size(), is(2));
+    }
+
+    @Test
+    public void shouldReturnTwoDevelopersWithSalaryBiggerThan450CriteriaJPQL() {
+        // when
+        List<Developer> developers = developerRepository.findDevelopersWithSalaryBiggerThanJPQL(450.0);
+
+        // then
+        assertThat(developers.size(), is(2));
+    }
+
 }
