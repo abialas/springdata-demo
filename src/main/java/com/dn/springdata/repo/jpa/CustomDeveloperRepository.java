@@ -17,4 +17,6 @@ public interface CustomDeveloperRepository {
 
     List<Developer> findDevelopersWithSalaryBiggerThanJPQL(double salary);
 
+    List<Developer> findDevelopersWithSalaryBiggerThanQueryDSL(double salary);
+
 }

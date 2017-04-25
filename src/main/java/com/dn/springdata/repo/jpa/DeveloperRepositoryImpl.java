@@ -2,6 +2,9 @@ package com.dn.springdata.repo.jpa;
 
 import com.dn.springdata.model.Developer;
 import com.dn.springdata.model.Developer_;
+import com.dn.springdata.model.QDeveloper;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +22,9 @@ public class DeveloperRepositoryImpl implements CustomDeveloperRepository {
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    private JPAQueryFactory queryFactory;
 
     @Override
     public String findMostPopularFirstName() {
@@ -62,4 +68,14 @@ public class DeveloperRepositoryImpl implements CustomDeveloperRepository {
 
         return query.getResultList();
     }
+
+    @Override
+    public List<Developer> findDevelopersWithSalaryBiggerThanQueryDSL(double salary) {
+        QDeveloper developer = QDeveloper.developer;
+        return queryFactory.selectFrom(developer)
+                .where(developer.salary.gt(salary))
+                .fetch();
+    }
+
+
 }

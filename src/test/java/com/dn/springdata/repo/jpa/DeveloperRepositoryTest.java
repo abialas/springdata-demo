@@ -250,7 +250,7 @@ public class DeveloperRepositoryTest {
     }
 
     @Test
-    public void shouldReturnTwoDevelopersWithSalaryBiggerThan450CriteriaJPQL() {
+    public void shouldReturnTwoDevelopersWithSalaryBiggerThan450JPQL() {
         // when
         List<Developer> developers = developerRepository.findDevelopersWithSalaryBiggerThanJPQL(450.0);
 
@@ -259,9 +259,18 @@ public class DeveloperRepositoryTest {
     }
 
     @Test
-    public void shouldReturnTwoDevelopersWithSalaryBiggerThan450QueryDsl() {
+    public void shouldReturnTwoDevelopersWithSalaryBiggerThan450QueryDslPredicate() {
         // when
         Iterable<Developer> developers = developerRepository.findAll(QDeveloper.developer.salary.gt(450.0));
+
+        // then
+        assertThat(developers.spliterator().getExactSizeIfKnown(), is(2l));
+    }
+
+    @Test
+    public void shouldReturnTwoDevelopersWithSalaryBiggerThan450QueryDsl() {
+        // when
+        List<Developer> developers = developerRepository.findDevelopersWithSalaryBiggerThanQueryDSL(450.0);
 
         // then
         assertThat(developers.spliterator().getExactSizeIfKnown(), is(2l));
